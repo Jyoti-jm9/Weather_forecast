@@ -71,7 +71,7 @@ export default function Searchbox({updateInfo , setCity1}) {
       // defaultValue="Kolkata"
       variant="filled"
       onChange={handleChange}
-      className="w-full h-full bg-gray-100/60 rounded-lg p-2 focus:outline-none focus:ring focus:border-blue-300 hover:bg-gray-100/20"
+      className="w-full h-full text-white bg-gray-100/40 rounded-lg p-2 focus:outline-none focus:ring focus:border-blue-300 hover:bg-gray-100/20 "
     />
   </div>
   <Button
