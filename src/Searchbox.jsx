@@ -3,19 +3,20 @@ import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import Button from '@mui/material/Button';
 //import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
+import { useState , useRef } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 //require('dotenv').config();
 
-export default function Searchbox({updateInfo}) {
-     let [city , setCity] =useState("");
+export default function Searchbox({updateInfo , setCity1}) {
+     let [city , setCity] =useState("Kolkata");
+     const initialFetchDone = useRef(false);
 
    const api_url = "https://api.openweathermap.org/data/2.5/weather?"; //lat=33.44&lon=-94.04&exclude=hourly,daily&appid={API key}
    const api_key = import.meta.env.VITE_API_KEY;
    
     
-
-   let getWeatherInfo = async () => {
+ 
+   let getWeatherInfo = async (city) => {
     let responce = await fetch(`${api_url}q=${city}&appid=${api_key}&units=metric`);
     let jsonResponse = await responce.json();
     console.log(jsonResponse);
@@ -32,26 +33,37 @@ export default function Searchbox({updateInfo}) {
       return myInfo;
    }
     
-
+ 
    
     let handleChange =(evt) => {
         setCity(evt.target.value);
-       
+      //  setCity1(evt.target.value);
     };
 
     let submitForm =async (evt) => {
       evt.preventDefault();
         console.log(city);
         setCity("");
-     let newInfo  =  await getWeatherInfo();
+     let newInfo  =  await getWeatherInfo(city);
     updateInfo(newInfo); 
+    setCity1(city);
+    }; 
+    
+    if (!initialFetchDone.current) {
+      initialFetchDone.current = true;
+      (async () => {
+        let initialInfo = await getWeatherInfo("Kolkata");
+        updateInfo(initialInfo);
+        setCity1("Kolkata");
+      })();
     }
+ 
     return ( 
        <>
        <div className='m-2 '>
-        <h2 className='text-4xl text-center'><TravelExploreIcon fontSize="large"/> Search For The Weather</h2>
+        <h2 className='text-4xl text-white text-center'><TravelExploreIcon fontSize="large"/> Search For The Weather</h2>
         <form onSubmit={submitForm} className='text-center m-3 flex flex-col md:flex-row md:items-center'>
-  <div className="w-full md:w-1/2 mx-auto md:flex-grow md:mr-2 mb-2 md:mb-0">
+  <div className="w-full md:w-1/2 mx-auto md:flex-grow md:mr-2 mb-2 md:mb-0 ">
     <TextField
       required
       id="city"
@@ -59,7 +71,7 @@ export default function Searchbox({updateInfo}) {
       // defaultValue="Kolkata"
       variant="filled"
       onChange={handleChange}
-      className="w-full h-full bg-gray-100 rounded-lg p-2 focus:outline-none focus:ring focus:border-blue-300"
+      className="w-full h-full bg-gray-100/60 rounded-lg p-2 focus:outline-none focus:ring focus:border-blue-300 hover:bg-gray-100/20"
     />
   </div>
   <Button
