@@ -21,7 +21,7 @@ export default function Infobox() {
 
     return(
         <div
-        className="bg-cover bg-center h-screen bg-blue-600"
+        className="bg-cover bg-center h-screen bg-blue-950"
         style={{ backgroundImage: "url('https://wallpapercave.com/wp/VCf1lhA.jpg')" }}
         >
         <Searchbox updateInfo ={updateInfo} setCity1={setCity1}/>
